@@ -1,18 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { readOrders } from "@/lib/orders";
 import { currency } from "@/lib/format";
 import type { MockOrder } from "@/lib/types";
 import { EmptyState } from "@/components/ui/States";
 
 export default function OrderHistoryPage() {
-  const [orders, setOrders] = useState<MockOrder[]>([]);
-
-  useEffect(() => {
-    setOrders(readOrders());
-  }, []);
+  const [orders] = useState<MockOrder[]>(() => readOrders());
 
   return (
     <div className="container" style={{ paddingTop: "1rem" }}>

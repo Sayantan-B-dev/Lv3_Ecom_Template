@@ -4,16 +4,12 @@ import Link from "next/link";
 import { useStore } from "@/lib/store-context";
 import { readOrders } from "@/lib/orders";
 import { currency } from "@/lib/format";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { MockOrder } from "@/lib/types";
 
 export default function AccountPage() {
   const { user, signOut } = useStore();
-  const [orders, setOrders] = useState<MockOrder[]>([]);
-
-  useEffect(() => {
-    setOrders(readOrders());
-  }, []);
+  const [orders] = useState<MockOrder[]>(() => readOrders());
 
   if (!user) {
     return (

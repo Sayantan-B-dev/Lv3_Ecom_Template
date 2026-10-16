@@ -30,24 +30,15 @@ function read<T>(key: string, fallback: T): T {
 }
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [wishlist, setWishlist] = useState<string[]>([]);
-  const [user, setUser] = useState<MockUser | null>(null);
-  const [hydrated, setHydrated] = useState(false);
+  const [cart, setCart] = useState<CartItem[]>(() => read<CartItem[]>("meridian.cart", []));
+  const [wishlist, setWishlist] = useState<string[]>(() => read<string[]>("meridian.wishlist", []));
+  const [user, setUser] = useState<MockUser | null>(() => read<MockUser | null>("meridian.user", null));
 
   useEffect(() => {
-    setCart(read<CartItem[]>("meridian.cart", []));
-    setWishlist(read<string[]>("meridian.wishlist", []));
-    setUser(read<MockUser | null>("meridian.user", null));
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
     window.localStorage.setItem("meridian.cart", JSON.stringify(cart));
     window.localStorage.setItem("meridian.wishlist", JSON.stringify(wishlist));
     window.localStorage.setItem("meridian.user", JSON.stringify(user));
-  }, [cart, wishlist, user, hydrated]);
+  }, [cart, wishlist, user]);
 
   const addToCart = useCallback((item: CartItem) => {
     setCart((prev) => {

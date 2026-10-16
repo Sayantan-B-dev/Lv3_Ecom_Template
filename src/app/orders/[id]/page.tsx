@@ -1,31 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { use, useState } from "react";
 import { currency, formatDate } from "@/lib/format";
 import { readOrders } from "@/lib/orders";
 import type { MockOrder } from "@/lib/types";
 
+function findOrder(id: string): MockOrder | null {
+  const found = readOrders().find((o) => o.id === id);
+  if (found) return found;
+  try {
+    const last = window.localStorage.getItem("meridian.lastOrder");
+    if (last) {
+      const parsed = JSON.parse(last) as MockOrder;
+      if (parsed.id === id) return parsed;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 export default function OrderPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [order, setOrder] = useState<MockOrder | null>(null);
-
-  useEffect(() => {
-    const found = readOrders().find((o) => o.id === id);
-    if (found) {
-      setOrder(found);
-      return;
-    }
-    try {
-      const last = window.localStorage.getItem("meridian.lastOrder");
-      if (last) {
-        const parsed = JSON.parse(last) as MockOrder;
-        if (parsed.id === id) setOrder(parsed);
-      }
-    } catch {
-      setOrder(null);
-    }
-  }, [id]);
+  const [order] = useState<MockOrder | null>(() => findOrder(id));
 
   if (!order) {
     return (
