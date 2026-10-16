@@ -29,7 +29,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
     return (
       <div className="container" style={{ paddingTop: "2rem" }}>
         <h1>Order not found (mock)</h1>
-        <p style={{ color: "var(--color-subtle)" }}>Mock orders live in this browser only.</p>
+        <p style={{ color: "var(--color-text-secondary)" }}>Mock orders live in this browser only.</p>
         <Link href="/products" className="btn btn-primary">Continue shopping</Link>
       </div>
     );
@@ -39,7 +39,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
     <div className="container" style={{ paddingTop: "1rem" }}>
       <div className="notice" role="status">Mock order confirmed — no payment was processed.</div>
       <h1>Thanks! Order {order.id}</h1>
-      <p style={{ color: "var(--color-subtle)" }}>Placed {formatDate(order.createdAt)} · receipt sent to {order.email} (mock).</p>
+      <p style={{ color: "var(--color-text-secondary)" }}>Placed {formatDate(order.createdAt)} · receipt sent to {order.email} (mock).</p>
       <div className="two-col">
         <div className="card card-pad">
           <h2>Items</h2>

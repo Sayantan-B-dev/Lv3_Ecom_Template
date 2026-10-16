@@ -23,7 +23,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         <button type="submit" className="btn btn-primary">Search</button>
       </form>
       <div style={{ marginTop: "1.5rem" }}>
-        {!q && <p style={{ color: "var(--color-subtle)" }}>Enter a term to search the mock catalog.</p>}
+        {!q && <p style={{ color: "var(--color-text-secondary)" }}>Enter a term to search the mock catalog.</p>}
         {result && result.items.length === 0 && (
           <EmptyState title={`No results for “${q}”`} detail="Try a different keyword or browse all products." actionLabel="Browse all" actionHref="/products" />
         )}

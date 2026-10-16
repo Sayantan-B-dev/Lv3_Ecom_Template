@@ -42,7 +42,7 @@ export default function Home() {
           <div className="section-head">
             <div>
               <h2 id="categories-title">{homeSections.categoriesTitle}</h2>
-              <p style={{ color: "var(--color-subtle)" }}>{homeSections.categoriesSubtitle}</p>
+              <p style={{ color: "var(--color-text-secondary)" }}>{homeSections.categoriesSubtitle}</p>
             </div>
             <Link href="/products" className="btn btn-secondary btn-sm">View all</Link>
           </div>
@@ -57,7 +57,7 @@ export default function Home() {
           <div className="section-head">
             <div>
               <h2 id="featured-title">{homeSections.featuredTitle}</h2>
-              <p style={{ color: "var(--color-subtle)" }}>{homeSections.featuredSubtitle}</p>
+              <p style={{ color: "var(--color-text-secondary)" }}>{homeSections.featuredSubtitle}</p>
             </div>
             <Link href="/products?sort=rating" className="btn btn-secondary btn-sm">Top rated</Link>
           </div>
@@ -70,7 +70,7 @@ export default function Home() {
             {promoBanners.map((b) => (
               <div key={b.title} className="card card-pad promo-card">
                 <p style={{ fontWeight: 800, marginBottom: "0.25rem" }}>{b.title}</p>
-                <p style={{ color: "var(--color-subtle)", margin: 0 }}>{b.detail}</p>
+                <p style={{ color: "var(--color-text-secondary)", margin: 0 }}>{b.detail}</p>
               </div>
             ))}
           </div>

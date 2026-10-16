@@ -40,7 +40,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
             )}
           </p>
           <p>{product.shortDescription}</p>
-          <p style={{ color: "var(--color-subtle)" }}>{product.description}</p>
+          <p style={{ color: "var(--color-text-secondary)" }}>{product.description}</p>
           <ul>
             {product.details.map((d) => (
               <li key={d}>{d}</li>

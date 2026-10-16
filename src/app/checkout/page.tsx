@@ -95,7 +95,7 @@ export default function CheckoutPage() {
             <input id="card" className="input" inputMode="numeric" defaultValue="4242 4242 4242 4242" />
             <span className="form-hint">Mock field — use the prefilled test value.</span>
           </div>
-          {error && <p role="alert" style={{ color: "var(--color-danger)" }}>{error}</p>}
+          {error && <p role="alert" style={{ color: "var(--color-feedback-danger)" }}>{error}</p>}
           <button type="submit" className="btn btn-primary btn-block" disabled={pending}>
             {pending ? "Placing mock order…" : `Pay ${currency(totals.total)} (mock)`}
           </button>

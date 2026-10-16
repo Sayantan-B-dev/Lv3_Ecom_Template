@@ -25,7 +25,7 @@ export default function CartPage() {
   return (
     <div className="container" style={{ paddingTop: "1rem" }}>
       <h1>Your cart</h1>
-      <p style={{ color: "var(--color-subtle)" }}>Mock cart stored in your browser. No real order is created until checkout.</p>
+      <p style={{ color: "var(--color-text-secondary)" }}>Mock cart stored in your browser. No real order is created until checkout.</p>
       <div className="checkout-grid">
         <div>
           {lines.map((line) => (
@@ -37,7 +37,7 @@ export default function CartPage() {
                 <Link href={`/products/${line.product.slug}`} style={{ fontWeight: 700 }}>
                   {line.product.name}
                 </Link>
-                <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--color-subtle)" }}>
+                <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--color-text-secondary)" }}>
                   {[line.size, line.color].filter(Boolean).join(" · ")}
                 </p>
                 <label style={{ fontSize: "0.85rem" }}>

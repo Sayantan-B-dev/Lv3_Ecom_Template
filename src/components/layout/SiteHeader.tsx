@@ -1,30 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { brand } from "@/config/brand";
 import { primaryNav } from "@/config/navigation";
 import { useStore } from "@/lib/store-context";
 
+function badgeLabel(count: number): string {
+  return count > 99 ? "99+" : String(count);
+}
+
 export function SiteHeader() {
   const { cartCount, wishlist, user } = useStore();
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
       <div className="promo-bar">
         Demo storefront — mock checkout, no real payments. Free mock shipping over $75.
       </div>
-      <header className="site-header">
+      <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
         <div className="container site-header-inner">
           <button
-            className="btn btn-ghost"
+            className="icon-btn"
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
           >
-            ☰
+            <span aria-hidden="true">{open ? "✕" : "☰"}</span>
           </button>
           <Link href="/" className="brand-lockup" aria-label={`${brand.name} home`}>
             <span className="brand-mark" aria-hidden="true">
@@ -33,33 +44,31 @@ export function SiteHeader() {
             <span>{brand.logoText}</span>
           </Link>
           <nav className="primary-nav" aria-label="Primary">
-            {primaryNav.map((link) => (
-              <Link key={link.href} href={link.href}>
-                {link.label}
-              </Link>
-            ))}
+            <ul>
+              {primaryNav.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href}>{link.label}</Link>
+                </li>
+              ))}
+            </ul>
           </nav>
           <div className="header-actions">
-            <form
-              role="search"
-              aria-label="Site search"
-              action="/search"
-              method="get"
-              onSubmit={(e) => {
-                if (!query.trim()) e.preventDefault();
-              }}
-              style={{ display: "none" }}
-            >
-              <input type="search" name="q" value={query} onChange={(e) => setQuery(e.target.value)} />
-            </form>
             <Link href="/search" className="icon-btn" aria-label="Search products">
-              ⌕
+              <span aria-hidden="true">⌕</span>
             </Link>
-            <Link href="/wishlist" className="icon-btn" aria-label={`Wishlist, ${wishlist.length} items`}>
-              ♥{wishlist.length > 0 && <span className="count-pill">{wishlist.length}</span>}
+            <Link
+              href="/wishlist"
+              className="icon-btn"
+              aria-label={`Wishlist, ${wishlist.length} items`}
+            >
+              <span aria-hidden="true">♥</span>
+              {wishlist.length > 0 && (
+                <span className="count-pill">{badgeLabel(wishlist.length)}</span>
+              )}
             </Link>
             <Link href="/cart" className="icon-btn" aria-label={`Cart, ${cartCount} items`}>
-              🛒{cartCount > 0 && <span className="count-pill">{cartCount}</span>}
+              <span aria-hidden="true">🛒</span>
+              {cartCount > 0 && <span className="count-pill">{badgeLabel(cartCount)}</span>}
             </Link>
             <Link href={user ? "/account" : "/auth/sign-in"} className="btn btn-secondary btn-sm">
               {user ? "Account" : "Sign in"}
@@ -67,14 +76,18 @@ export function SiteHeader() {
           </div>
         </div>
         {open && (
-          <nav className="container" aria-label="Mobile" style={{ paddingBottom: "1rem" }}>
-            {primaryNav.map((link) => (
-              <div key={link.href} style={{ padding: "0.4rem 0" }}>
-                <Link href={link.href} onClick={() => setOpen(false)}>
-                  {link.label}
-                </Link>
-              </div>
-            ))}
+          <nav className="container" aria-label="Mobile">
+            <ul
+              style={{ listStyle: "none", margin: 0, padding: "0 0 16px" }}
+            >
+              {primaryNav.map((link) => (
+                <li key={link.href} style={{ padding: "4px 0" }}>
+                  <Link href={link.href} onClick={() => setOpen(false)}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </nav>
         )}
       </header>

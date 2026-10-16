@@ -28,7 +28,7 @@ export default async function CategoryPage({
     <div className="container" style={{ paddingTop: "1rem" }}>
       <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Products", href: "/products" }, { label: category.name }]} />
       <h1>{category.name}</h1>
-      <p style={{ color: "var(--color-subtle)" }}>{category.description}</p>
+      <p style={{ color: "var(--color-text-secondary)" }}>{category.description}</p>
       {result.items.length === 0 ? (
         <EmptyState title="No products yet" detail="This category has no mock products." actionLabel="Browse all" actionHref="/products" />
       ) : (

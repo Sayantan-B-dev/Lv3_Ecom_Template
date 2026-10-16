@@ -15,7 +15,7 @@ export default function SignUpPage() {
     <div className="container">
       <div className="auth-wrap card card-pad">
         <h1>Create account (mock)</h1>
-        <p style={{ color: "var(--color-subtle)" }}>Stored only in your browser. No email is sent.</p>
+        <p style={{ color: "var(--color-text-secondary)" }}>Stored only in your browser. No email is sent.</p>
         <form
           onSubmit={(e) => {
             e.preventDefault();

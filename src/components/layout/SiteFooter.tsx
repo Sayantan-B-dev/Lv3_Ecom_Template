@@ -8,8 +8,8 @@ export function SiteFooter() {
       <div className="container footer-grid">
         <div>
           <p style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>{brand.name}</p>
-          <p style={{ color: "var(--color-subtle)", maxWidth: "22rem" }}>{brand.tagline}.</p>
-          <p style={{ color: "var(--color-subtle)", fontSize: "0.9rem" }}>
+          <p style={{ color: "var(--color-text-inverse-secondary)", maxWidth: "22rem" }}>{brand.tagline}.</p>
+          <p style={{ color: "var(--color-text-inverse-secondary)", fontSize: "0.9rem" }}>
             Contact: <a href={`mailto:${brand.supportEmail}`}>{brand.supportEmail}</a>
           </p>
         </div>
@@ -31,13 +31,13 @@ export function SiteFooter() {
         </nav>
         <div>
           <p style={{ fontWeight: 700 }}>Demo notice</p>
-          <p style={{ color: "var(--color-subtle)", fontSize: "0.9rem" }}>
+          <p style={{ color: "var(--color-text-inverse-secondary)", fontSize: "0.9rem" }}>
             Authentication, checkout and orders are mocked with local data. No real payment is
             processed.
           </p>
         </div>
       </div>
-      <div className="container" style={{ marginTop: "2rem", fontSize: "0.85rem", color: "var(--color-subtle)" }}>
+      <div className="container" style={{ marginTop: "2rem", fontSize: "0.85rem", color: "var(--color-text-inverse-secondary)" }}>
         © {new Date().getFullYear()} {brand.name}. Reusable storefront template.
       </div>
     </footer>

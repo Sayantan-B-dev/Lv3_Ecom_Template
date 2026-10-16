@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
+import { Manrope } from "next/font/google";
 import { site } from "@/config/content";
 import { StoreProvider } from "@/lib/store-context";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import "./globals.css";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-manrope",
+});
 
 export const metadata: Metadata = {
   title: site.title,
@@ -12,10 +19,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={manrope.variable}>
       <body className="site-body">
         <a href="#main" className="skip-link">
-          Skip to content
+          Skip to main content
         </a>
         <StoreProvider>
           <SiteHeader />

@@ -1,40 +1,134 @@
+/* Layer 1 — brand layer. The only values edited when cloning for a new site. */
 :root {
-  --color-brand: #1d4ed8;
-  --color-brand-dark: #1e3a8a;
-  --color-brand-contrast: #ffffff;
-  --color-accent: #f59e0b;
-  --color-surface: #ffffff;
-  --color-muted: #f4f5f7;
-  --color-ink: #111827;
-  --color-subtle: #6b7280;
-  --color-line: #e5e7eb;
-  --color-success: #15803d;
-  --color-danger: #b91c1c;
-  --color-warning-bg: #fef3c7;
-  --color-info-bg: #dbeafe;
+  --brand-name: "Meridian";
+  --brand-accent: #ffdb00;
+  --brand-accent-ink: #111111;
+  --brand-ink: #121212;
+  --brand-paper: #ffffff;
+  --brand-font-primary: "Manrope";
+  --brand-font-display: "Manrope";
+  --brand-radius-style: pill;
+}
 
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+/* Layer 2 — semantic layer. Components must consume only these tokens. */
+:root {
+  /* text */
+  --color-text-primary: #121212;
+  --color-text-secondary: #5b5b5f;
+  --color-text-tertiary: #767679;
+  --color-text-inverse: #ffffff;
+  --color-text-inverse-secondary: #c9c9ce; /* secondary text on dark surfaces (4.5:1+ on strong) */
+  --color-text-accent: var(--brand-accent-ink);
+  --color-text-link: #121212;
+  --color-text-danger: #b3261e;
+  --color-text-success: #1e6b3a;
+  --color-text-sale: #b64400;
 
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
+  /* surfaces */
+  --color-surface-base: var(--brand-paper);
+  --color-surface-muted: #f5f5f5;
+  --color-surface-raised: #f5f5f7;
+  --color-surface-sunken: #ececee;
+  --color-surface-strong: #121212;
+  --color-surface-accent: var(--brand-accent);
+  --color-surface-overlay: rgba(18, 18, 18, 0.48);
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-full: 999px;
+  /* borders */
+  --color-border-muted: rgba(18, 18, 18, 0.1);
+  --color-border-default: #d2d2d7;
+  --color-border-strong: #212121;
+  --color-border-focus: #0b57d0;
 
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
-  --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08);
-  --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.12);
+  /* feedback */
+  --color-feedback-info: #0b57d0;
+  --color-feedback-success: #1e6b3a;
+  --color-feedback-warning: #8a5a00;
+  --color-feedback-danger: #b3261e;
 
-  --container-max: 72rem;
-  --header-height: 4rem;
+  /* type */
+  --font-family-stack: var(--font-manrope), "Manrope", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-family-display: var(--brand-font-display), var(--font-family-stack);
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-size-2xs: 11.5px;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 30px;
+  --font-size-3xl: 36px;
+  --font-size-4xl: 48px;
+  --font-size-5xl: 72px;
+
+  /* spacing (4px base) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 80px;
+  --space-11: 112px;
+
+  /* radius (pill style) */
+  --radius-xs: 8px;
+  --radius-sm: 16px;
+  --radius-md: 24px;
+  --radius-lg: 32px;
+  --radius-pill: 9999px;
+  --radius-control: 9999px;
+  --radius-media: 16px;
+
+  /* elevation */
+  --shadow-0: none;
+  --shadow-1: 0 8px 24px 0 rgba(18, 18, 18, 0.035);
+  --shadow-2: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+  --shadow-3: 0 18px 70px 0 rgba(18, 18, 18, 0.06);
+  --shadow-inset-border: inset 0 0 0 1px var(--color-border-default);
+
+  /* motion */
+  --motion-instant: 150ms;
+  --motion-fast: 200ms;
+  --motion-normal: 300ms;
+  --motion-slow: 500ms;
+  --motion-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-enter: cubic-bezier(0, 0, 0, 1);
+  --motion-exit: cubic-bezier(0.3, 0, 1, 1);
+
+  /* layout */
+  --container-max: 1440px;
+  --header-height: 64px;
+  --filter-width: 280px;
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-drawer: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-skip-link: 1000;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 72px;
+  }
+}
+
+/* Dark mode: token swaps only. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary: #f5f5f7;
+    --color-text-secondary: #a8a8ad;
+    --color-text-link: #f5f5f7;
+    --color-surface-base: #0e0e0f;
+    --color-surface-muted: #17171a;
+    --color-surface-raised: #1f1f23;
+    --color-surface-sunken: #26262b;
+    --color-border-muted: rgba(255, 255, 255, 0.14);
+    --color-border-default: rgba(255, 255, 255, 0.2);
+  }
 }

@@ -60,7 +60,7 @@ export default async function ProductsPage({
     <div className="container" style={{ paddingTop: "1rem" }}>
       <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Products" }]} />
       <h1>All products</h1>
-      <p style={{ color: "var(--color-subtle)" }}>
+      <p style={{ color: "var(--color-text-secondary)" }}>
         {result.total} mock products · mock prices in USD · no real checkout.
       </p>
 

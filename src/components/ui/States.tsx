@@ -14,7 +14,7 @@ export function EmptyState({
   return (
     <div className="empty-state" role="status">
       <h2>{title}</h2>
-      <p style={{ color: "var(--color-subtle)" }}>{detail}</p>
+      <p style={{ color: "var(--color-text-secondary)" }}>{detail}</p>
       {actionLabel && actionHref && (
         <Link href={actionHref} className="btn btn-primary">
           {actionLabel}

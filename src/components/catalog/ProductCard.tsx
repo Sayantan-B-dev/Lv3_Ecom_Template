@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { gradientFor } from "@/lib/catalog";
+import { getCategory, gradientFor } from "@/lib/catalog";
 import { currency } from "@/lib/format";
 import { useStore } from "@/lib/store-context";
 import type { Product } from "@/lib/types";
@@ -10,41 +10,48 @@ import { Rating } from "./Rating";
 export function ProductCard({ product }: { product: Product }) {
   const { wishlist, toggleWishlist } = useStore();
   const active = wishlist.includes(product.slug);
+  const category = getCategory(product.categorySlug);
 
   return (
     <article className="card product-card">
-      <Link
-        href={`/products/${product.slug}`}
+      <div
         className="product-media"
         style={{ background: gradientFor(product) }}
-        aria-label={`View ${product.name}`}
+        role="img"
+        aria-label={`${product.name} placeholder image`}
       >
         <span aria-hidden="true">{product.glyph}</span>
-      </Link>
+      </div>
+      <div className="product-card-badges" aria-hidden="true">
+        {product.compareAtPrice && <span className="badge badge-accent">Sale</span>}
+        {product.tags.includes("new") && <span className="badge badge-brand">New</span>}
+      </div>
+      <button
+        type="button"
+        className="icon-btn product-card-wishlist"
+        aria-pressed={active}
+        aria-label={active ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
+        onClick={() => toggleWishlist(product.slug)}
+      >
+        <span aria-hidden="true">{active ? "♥" : "♡"}</span>
+      </button>
       <div className="product-card-body">
-        <div>
-          {product.compareAtPrice && <span className="badge badge-accent">Sale</span>}{" "}
-          {product.tags.includes("new") && <span className="badge badge-brand">New</span>}
-        </div>
-        <Link href={`/products/${product.slug}`} className="product-card-title">
+        {category && <p className="product-card-eyebrow">{category.name}</p>}
+        <Link href={`/products/${product.slug}`} className="product-card-title" title={product.name}>
           {product.name}
         </Link>
         <Rating value={product.rating} reviews={product.reviews} />
         <div className="price-row">
-          <span className="price">{currency(product.price)}</span>
+          <span className="price">
+            <span className="visually-hidden">Price: </span>
+            {currency(product.price)}
+          </span>
           {product.compareAtPrice && (
-            <span className="price-compare">{currency(product.compareAtPrice)}</span>
+            <del className="price-compare">
+              <span className="visually-hidden">Original price: </span>
+              {currency(product.compareAtPrice)}
+            </del>
           )}
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm"
-            style={{ marginLeft: "auto" }}
-            aria-pressed={active}
-            aria-label={active ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
-            onClick={() => toggleWishlist(product.slug)}
-          >
-            {active ? "♥" : "♡"}
-          </button>
         </div>
       </div>
     </article>

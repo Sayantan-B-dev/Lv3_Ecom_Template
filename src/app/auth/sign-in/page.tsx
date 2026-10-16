@@ -15,7 +15,7 @@ export default function SignInPage() {
     <div className="container">
       <div className="auth-wrap card card-pad">
         <h1>Sign in (mock)</h1>
-        <p style={{ color: "var(--color-subtle)" }}>Any email and password signs you in locally. No real authentication.</p>
+        <p style={{ color: "var(--color-text-secondary)" }}>Any email and password signs you in locally. No real authentication.</p>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -35,7 +35,7 @@ export default function SignInPage() {
             <label htmlFor="password">Password</label>
             <input id="password" className="input" type="password" defaultValue="demo-password" required minLength={4} />
           </div>
-          {error && <p role="alert" style={{ color: "var(--color-danger)" }}>{error}</p>}
+          {error && <p role="alert" style={{ color: "var(--color-feedback-danger)" }}>{error}</p>}
           <button type="submit" className="btn btn-primary btn-block">Sign in</button>
         </form>
         <p style={{ marginTop: "1rem" }}>

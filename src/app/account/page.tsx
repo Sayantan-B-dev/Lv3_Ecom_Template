@@ -24,7 +24,7 @@ export default function AccountPage() {
   return (
     <div className="container" style={{ paddingTop: "1rem" }}>
       <h1>Hi, {user.name}</h1>
-      <p style={{ color: "var(--color-subtle)" }}>{user.email} · mock account stored locally</p>
+      <p style={{ color: "var(--color-text-secondary)" }}>{user.email} · mock account stored locally</p>
       <div className="account-grid">
         <aside className="card card-pad">
           <nav aria-label="Account">
@@ -38,7 +38,7 @@ export default function AccountPage() {
         <div>
           <h2>Recent mock orders</h2>
           {orders.length === 0 ? (
-            <p style={{ color: "var(--color-subtle)" }}>No mock orders yet. Try the checkout flow.</p>
+            <p style={{ color: "var(--color-text-secondary)" }}>No mock orders yet. Try the checkout flow.</p>
           ) : (
             <table className="table">
               <thead><tr><th>Order</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
