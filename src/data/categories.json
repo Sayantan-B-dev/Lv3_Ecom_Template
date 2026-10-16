@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "apparel",
+    "name": "Apparel",
+    "tagline": "Tees, knits and outerwear",
+    "description": "Everyday apparel staples in neutral colors and durable fabrics.",
+    "glyph": "👕"
+  },
+  {
+    "slug": "footwear",
+    "name": "Footwear",
+    "tagline": "Sneakers and boots",
+    "description": "Comfortable footwear for daily wear and weekend walks.",
+    "glyph": "👟"
+  },
+  {
+    "slug": "accessories",
+    "name": "Accessories",
+    "tagline": "Bags, caps and more",
+    "description": "Simple accessories that complete any outfit.",
+    "glyph": "🎒"
+  },
+  {
+    "slug": "home-goods",
+    "name": "Home Goods",
+    "tagline": "Textiles and lighting",
+    "description": "Warm, minimal pieces for living spaces.",
+    "glyph": "🛋️"
+  },
+  {
+    "slug": "electronics",
+    "name": "Electronics",
+    "tagline": "Audio and carry tech",
+    "description": "Practical tech accessories for work and travel.",
+    "glyph": "🎧"
+  },
+  {
+    "slug": "outdoors",
+    "name": "Outdoors",
+    "tagline": "Trail and camp gear",
+    "description": "Lightweight gear for day trips and weekends outside.",
+    "glyph": "⛺"
+  }
+]
