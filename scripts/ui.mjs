@@ -32,6 +32,20 @@ function listThemes() {
     });
 }
 
+function readEnvTheme() {
+  for (const file of [".env.local", ".env"]) {
+    const envPath = path.join(projectRoot, file);
+    if (!existsSync(envPath)) continue;
+    const line = readFileSync(envPath, "utf8")
+      .split(/\r?\n/)
+      .find((entry) => entry.trim().startsWith("UI_THEME="));
+    if (!line) continue;
+    const value = line.slice(line.indexOf("=") + 1).trim().replace(/^["']|["']$/g, "");
+    if (value) return value;
+  }
+  return undefined;
+}
+
 const [command = "dev", ...args] = process.argv.slice(2);
 const themes = listThemes();
 
@@ -59,7 +73,7 @@ if (themes.length === 0) {
 }
 
 const explicitTheme = args[0] && !args[0].startsWith("-") ? args[0] : undefined;
-const themeId = explicitTheme ?? process.env.UI_THEME ?? themes[0].id;
+const themeId = explicitTheme ?? process.env.UI_THEME ?? readEnvTheme() ?? themes[0].id;
 const theme = themes.find((item) => item.id === themeId);
 
 if (!theme) {

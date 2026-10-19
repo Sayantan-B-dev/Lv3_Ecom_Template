@@ -8,7 +8,7 @@ The template can hold several independent storefront designs in one Next.js app.
 - The route files in `src/app/` import the module `"ui"` and render `ui.pages.<Page>`.
 - `next.config.ts` aliases `"ui"` to the selected theme folder at build time. Only that theme is compiled, so deleted themes cost nothing.
 - `src/types/ui.d.ts` declares the `"ui"` module for TypeScript against the shared contract in `src/ui/contract.ts`.
-- Selection order: the theme id passed to the runner, then `UI_THEME`, then the first theme folder alphabetically.
+- Selection order: the theme id passed to the runner, then `UI_THEME` from the shell, then `UI_THEME` from `.env.local` or `.env`, then the first theme folder alphabetically.
 
 ## Commands
 
@@ -46,7 +46,7 @@ pages: {
 
 Delete the `src/ui/<theme-id>/` folders you do not want. There is no registry to update. With one theme left, plain `npm run dev` and `npm run build` use it automatically.
 
-If several themes remain and you want a different default, either pass the id or set `UI_THEME` in your shell or `.env.local`.
+If several themes remain and you want a different default, either pass the id or set `UI_THEME` in your shell or `.env.local`. Copy `.env.example` to `.env.local` to start.
 
 ## Boundaries
 
