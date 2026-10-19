@@ -1,9 +1,5 @@
-import { LoadingGrid } from "@/components/ui/States";
+import ui from "ui";
 
-export default function Loading() {
-  return (
-    <div className="container" style={{ paddingTop: "2rem" }}>
-      <LoadingGrid />
-    </div>
-  );
-}
+const Page = ui.pages.Loading;
+
+export default Page;

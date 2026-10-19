@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "node scripts/ui.mjs dev",
+    "build": "node scripts/ui.mjs build",
+    "start": "node scripts/ui.mjs start",
+    "ui:list": "node scripts/ui.mjs list",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
