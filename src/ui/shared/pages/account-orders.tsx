@@ -1,19 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { readOrders } from "@/lib/orders";
+import { useMockOrders } from "@/lib/use-orders";
 import { currency } from "@/lib/format";
-import type { MockOrder } from "@/lib/types";
 import { EmptyState } from "@/ui/shared/components/States";
 
 export function AccountOrdersPage() {
-  const [orders] = useState<MockOrder[]>(() => readOrders());
+  const { orders, loaded } = useMockOrders();
 
   return (
     <div className="container" style={{ paddingTop: "1rem" }}>
       <h1>Order history (mock)</h1>
-      {orders.length === 0 ? (
+      {!loaded ? (
+        <p style={{ color: "var(--color-text-secondary)" }}>Loading mock orders…</p>
+      ) : orders.length === 0 ? (
         <EmptyState title="No orders yet" detail="Complete the mock checkout to see an order here." actionLabel="Start shopping" actionHref="/products" />
       ) : (
         <table className="table">

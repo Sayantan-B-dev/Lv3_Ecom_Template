@@ -32,3 +32,21 @@ export const homeSections = {
   featuredSubtitle: "Top-rated items across the catalog.",
   valueTitle: "Why shop the template",
 } as const;
+
+export const editorialContent = {
+  kicker: "Issue No. 01 · Autumn 2026",
+  title: "Objects with a long life.",
+  subtitle:
+    "A considered catalog of everyday pieces, chosen for how they wear in, not how they photograph on day one. Fewer things, kept longer.",
+  primaryCta: { label: "Explore the edit", href: "/products" },
+  secondaryCta: { label: "Read the index", href: "#departments" },
+  note: "Demo storefront — payments, sign-in and orders are simulated.",
+  indexTitle: "The index",
+  featuredTitle: "The edit",
+  featuredSubtitle: "Six pieces our editors keep returning to.",
+  featuredCta: { label: "View all products", href: "/products" },
+  manifestoTitle: "A slower way to shop",
+  departmentsTitle: "Departments",
+  departmentsSubtitle: "Browse the full catalog by room, wardrobe and terrain.",
+  valueTitle: "Our promises",
+} as const;

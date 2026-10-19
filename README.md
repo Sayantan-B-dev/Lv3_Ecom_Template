@@ -18,7 +18,8 @@ Open `http://localhost:3000`.
 ```bash
 npm run ui:list
 npm run dev            # first available theme
-npm run dev v1         # a specific theme
+npm run dev v1         # Classic
+npm run dev v2         # Editorial
 npm run build v1
 npm run start v1
 ```
@@ -32,7 +33,8 @@ Themes live in `src/ui/<theme-id>/`. `next.config.ts` resolves the `"ui"` alias 
 - `src/lib/` — `types.ts`, `catalog.ts` (filter/sort/search/paginate + gradients), `orders.ts` (cart totals, mock orders), `store-context.tsx` (cart/wishlist/user in `localStorage`), `format.ts`.
 - `src/ui/contract.ts` — the page and theme interface every UI implements.
 - `src/ui/shared/` — page templates and presentational components reused by themes.
-- `src/ui/v1/` — the classic storefront: shell, home page, tokens and styles.
+- `src/ui/v1/` — Classic: soft radii, yellow accent, content-first catalog.
+- `src/ui/v2/` — Editorial: warm paper, serif headlines, sharp grid and masthead.
 - `src/app/` — thin route adapters, API handlers and the root layout; page files import the active theme from `"ui"`.
 - `src/styles/` — shared reset, accessibility utilities and base typography.
 

@@ -32,6 +32,7 @@ export function SiteHeader() {
           <button
             className="icon-btn"
             aria-expanded={open}
+            aria-controls="v1-mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
           >
@@ -53,12 +54,16 @@ export function SiteHeader() {
             </ul>
           </nav>
           <div className="header-actions">
-            <Link href="/search" className="icon-btn" aria-label="Search products">
+            <Link
+              href="/search"
+              className="icon-btn header-action-secondary"
+              aria-label="Search products"
+            >
               <span aria-hidden="true">⌕</span>
             </Link>
             <Link
               href="/wishlist"
-              className="icon-btn"
+              className="icon-btn header-action-secondary"
               aria-label={`Wishlist, ${wishlist.length} items`}
             >
               <span aria-hidden="true">♥</span>
@@ -70,26 +75,43 @@ export function SiteHeader() {
               <span aria-hidden="true">🛒</span>
               {cartCount > 0 && <span className="count-pill">{badgeLabel(cartCount)}</span>}
             </Link>
-            <Link href={user ? "/account" : "/auth/sign-in"} className="btn btn-secondary btn-sm">
+            <Link
+              href={user ? "/account" : "/auth/sign-in"}
+              className="btn btn-secondary btn-sm header-action-secondary"
+            >
               {user ? "Account" : "Sign in"}
             </Link>
           </div>
         </div>
-        {open && (
-          <nav className="container" aria-label="Mobile">
-            <ul
-              style={{ listStyle: "none", margin: 0, padding: "0 0 16px" }}
-            >
-              {primaryNav.map((link) => (
-                <li key={link.href} style={{ padding: "4px 0" }}>
-                  <Link href={link.href} onClick={() => setOpen(false)}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
+        <nav id="v1-mobile-nav" className="container" aria-label="Mobile" hidden={!open}>
+          <ul style={{ listStyle: "none", margin: 0, padding: "0 0 16px" }}>
+            {primaryNav.map((link) => (
+              <li key={link.href} style={{ padding: "4px 0" }}>
+                <Link href={link.href} onClick={() => setOpen(false)}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+            <li style={{ padding: "4px 0" }}>
+              <Link href="/search" onClick={() => setOpen(false)}>
+                Search
+              </Link>
+            </li>
+            <li style={{ padding: "4px 0" }}>
+              <Link href="/wishlist" onClick={() => setOpen(false)}>
+                Wishlist
+              </Link>
+            </li>
+            <li style={{ padding: "4px 0" }}>
+              <Link
+                href={user ? "/account" : "/auth/sign-in"}
+                onClick={() => setOpen(false)}
+              >
+                {user ? "Account" : "Sign in"}
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </header>
     </>
   );

@@ -1,0 +1,144 @@
+/* v2 — editorial brand layer. The only values edited when cloning this UI. */
+:root {
+  --brand-name: "Meridian";
+  --brand-accent: #b4452a;
+  --brand-accent-ink: #fff8f0;
+  --brand-ink: #1c1a17;
+  --brand-paper: #f6f1e7;
+  --brand-font-primary: "Inter";
+  --brand-font-display: "Fraunces";
+  --brand-radius-style: sharp;
+
+  /* text */
+  --color-text-primary: #1c1a17;
+  --color-text-secondary: #5c564d;
+  --color-text-tertiary: #8a8378;
+  --color-text-inverse: #f8f3e9;
+  --color-text-inverse-secondary: #cfc7b8;
+  --color-text-accent: var(--brand-accent-ink);
+  --color-text-link: #1c1a17;
+  --color-text-danger: #a3311b;
+  --color-text-success: #2f5d3a;
+  --color-text-sale: #9c3a22;
+
+  /* surfaces */
+  --color-surface-base: var(--brand-paper);
+  --color-surface-muted: #efe8db;
+  --color-surface-raised: #f1ebdf;
+  --color-surface-sunken: #e5ddcf;
+  --color-surface-strong: #1c1a17;
+  --color-surface-accent: var(--brand-accent);
+  --color-surface-overlay: rgba(28, 26, 23, 0.5);
+
+  /* borders */
+  --color-border-muted: rgba(28, 26, 23, 0.12);
+  --color-border-default: #c8bfaf;
+  --color-border-strong: #1c1a17;
+  --color-border-focus: #1f5f8b;
+
+  /* feedback */
+  --color-feedback-info: #1f5f8b;
+  --color-feedback-success: #2f5d3a;
+  --color-feedback-warning: #8a5a00;
+  --color-feedback-danger: #a3311b;
+
+  /* type */
+  --font-family-stack: var(--font-inter), "Inter", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-family-display: var(--font-fraunces), "Fraunces", Georgia, "Times New Roman", serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-size-2xs: 11px;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 30px;
+  --font-size-3xl: 36px;
+  --font-size-4xl: 48px;
+  --font-size-5xl: 72px;
+
+  /* spacing (4px base) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 80px;
+  --space-11: 112px;
+
+  /* radius (sharp style) */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-pill: 2px;
+  --radius-control: 0;
+  --radius-media: 0;
+
+  /* elevation */
+  --shadow-0: none;
+  --shadow-1: 0 1px 0 var(--color-border-muted);
+  --shadow-2: 0 10px 30px rgba(28, 26, 23, 0.12);
+  --shadow-3: 0 24px 80px rgba(28, 26, 23, 0.18);
+  --shadow-inset-border: inset 0 0 0 1px var(--color-border-default);
+
+  /* motion */
+  --motion-instant: 150ms;
+  --motion-fast: 200ms;
+  --motion-normal: 300ms;
+  --motion-slow: 500ms;
+  --motion-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-enter: cubic-bezier(0, 0, 0, 1);
+  --motion-exit: cubic-bezier(0.3, 0, 1, 1);
+
+  /* layout */
+  --container-max: 1280px;
+  --header-height: 68px;
+  --filter-width: 240px;
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-drawer: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-skip-link: 1000;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 76px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand-accent: #d97757;
+    --brand-accent-ink: #1c1a17;
+    --color-text-primary: #f3ede2;
+    --color-text-secondary: #b8b0a2;
+    --color-text-tertiary: #8f887c;
+    --color-text-inverse: #161412;
+    --color-text-inverse-secondary: #d7cfc2;
+    --color-text-link: #f3ede2;
+    --color-text-danger: #ef8f76;
+    --color-text-sale: #ef8f76;
+    --color-surface-base: #161412;
+    --color-surface-muted: #1e1b18;
+    --color-surface-raised: #24201c;
+    --color-surface-sunken: #2a2520;
+    --color-surface-strong: #0e0d0b;
+    --color-surface-overlay: rgba(5, 5, 4, 0.68);
+    --color-border-muted: rgba(246, 241, 231, 0.16);
+    --color-border-default: rgba(246, 241, 231, 0.28);
+    --color-border-strong: #f3ede2;
+    --color-border-focus: #7db6df;
+    --color-feedback-info: #7db6df;
+    --color-feedback-warning: #e0b25e;
+    --color-feedback-danger: #ef8f76;
+  }
+}

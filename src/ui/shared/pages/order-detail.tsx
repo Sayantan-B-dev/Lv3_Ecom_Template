@@ -1,29 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { use, useState } from "react";
+import { use } from "react";
 import { currency, formatDate } from "@/lib/format";
-import { readOrders } from "@/lib/orders";
-import type { MockOrder } from "@/lib/types";
-
-function findOrder(id: string): MockOrder | null {
-  const found = readOrders().find((o) => o.id === id);
-  if (found) return found;
-  try {
-    const last = window.localStorage.getItem("meridian.lastOrder");
-    if (last) {
-      const parsed = JSON.parse(last) as MockOrder;
-      if (parsed.id === id) return parsed;
-    }
-  } catch {
-    return null;
-  }
-  return null;
-}
+import { useMockOrder } from "@/lib/use-orders";
 
 export function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [order] = useState<MockOrder | null>(() => findOrder(id));
+  const { order, loaded } = useMockOrder(id);
+
+  if (!loaded) {
+    return (
+      <div className="container" style={{ paddingTop: "2rem" }}>
+        <h1>Loading order…</h1>
+        <p style={{ color: "var(--color-text-secondary)" }}>Reading the mock order from this browser.</p>
+      </div>
+    );
+  }
 
   if (!order) {
     return (

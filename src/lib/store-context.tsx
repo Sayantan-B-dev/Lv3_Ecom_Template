@@ -1,12 +1,15 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useSyncExternalStore } from "react";
 import type { CartItem, MockUser } from "@/lib/types";
 
-interface StoreState {
+interface StoreSnapshot {
   cart: CartItem[];
   wishlist: string[];
   user: MockUser | null;
+}
+
+interface StoreState extends StoreSnapshot {
   addToCart: (item: CartItem) => void;
   removeFromCart: (slug: string) => void;
   updateQuantity: (slug: string, quantity: number) => void;
@@ -17,7 +20,17 @@ interface StoreState {
   cartCount: number;
 }
 
+const EMPTY: StoreSnapshot = { cart: [], wishlist: [], user: null };
+const STORAGE_KEYS = {
+  cart: "meridian.cart",
+  wishlist: "meridian.wishlist",
+  user: "meridian.user",
+} as const;
+
 const StoreContext = createContext<StoreState | null>(null);
+const listeners = new Set<() => void>();
+const storageKeys = new Set<string>(Object.values(STORAGE_KEYS));
+let snapshot: StoreSnapshot | null = null;
 
 function read<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
@@ -29,57 +42,119 @@ function read<T>(key: string, fallback: T): T {
   }
 }
 
-export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>(() => read<CartItem[]>("meridian.cart", []));
-  const [wishlist, setWishlist] = useState<string[]>(() => read<string[]>("meridian.wishlist", []));
-  const [user, setUser] = useState<MockUser | null>(() => read<MockUser | null>("meridian.user", null));
+function loadSnapshot(): StoreSnapshot {
+  return {
+    cart: read<CartItem[]>(STORAGE_KEYS.cart, []),
+    wishlist: read<string[]>(STORAGE_KEYS.wishlist, []),
+    user: read<MockUser | null>(STORAGE_KEYS.user, null),
+  };
+}
 
-  useEffect(() => {
-    window.localStorage.setItem("meridian.cart", JSON.stringify(cart));
-    window.localStorage.setItem("meridian.wishlist", JSON.stringify(wishlist));
-    window.localStorage.setItem("meridian.user", JSON.stringify(user));
-  }, [cart, wishlist, user]);
+function getSnapshot(): StoreSnapshot {
+  if (!snapshot && typeof window !== "undefined") {
+    snapshot = loadSnapshot();
+  }
+  return snapshot ?? EMPTY;
+}
+
+function getServerSnapshot(): StoreSnapshot {
+  return EMPTY;
+}
+
+function notify(): void {
+  for (const listener of listeners) listener();
+}
+
+function persist(next: StoreSnapshot): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(STORAGE_KEYS.cart, JSON.stringify(next.cart));
+  window.localStorage.setItem(STORAGE_KEYS.wishlist, JSON.stringify(next.wishlist));
+  window.localStorage.setItem(STORAGE_KEYS.user, JSON.stringify(next.user));
+}
+
+function setSnapshot(next: StoreSnapshot): void {
+  snapshot = next;
+  persist(next);
+  notify();
+}
+
+function update(updater: (current: StoreSnapshot) => StoreSnapshot): void {
+  setSnapshot(updater(getSnapshot()));
+}
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (event) => {
+    if (event.key === null || !storageKeys.has(event.key)) return;
+    snapshot = loadSnapshot();
+    notify();
+  });
+}
+
+export function StoreProvider({ children }: { children: React.ReactNode }) {
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const addToCart = useCallback((item: CartItem) => {
-    setCart((prev) => {
-      const existing = prev.find(
+    update((current) => {
+      const existing = current.cart.find(
         (line) => line.slug === item.slug && line.size === item.size && line.color === item.color,
       );
       if (existing) {
-        return prev.map((line) =>
-          line === existing ? { ...line, quantity: line.quantity + item.quantity } : line,
-        );
+        return {
+          ...current,
+          cart: current.cart.map((line) =>
+            line === existing ? { ...line, quantity: line.quantity + item.quantity } : line,
+          ),
+        };
       }
-      return [...prev, item];
+      return { ...current, cart: [...current.cart, item] };
     });
   }, []);
 
   const removeFromCart = useCallback((slug: string) => {
-    setCart((prev) => prev.filter((line) => line.slug !== slug));
+    update((current) => ({ ...current, cart: current.cart.filter((line) => line.slug !== slug) }));
   }, []);
 
   const updateQuantity = useCallback((slug: string, quantity: number) => {
-    setCart((prev) =>
-      quantity <= 0
-        ? prev.filter((line) => line.slug !== slug)
-        : prev.map((line) => (line.slug === slug ? { ...line, quantity } : line)),
-    );
+    update((current) => ({
+      ...current,
+      cart:
+        quantity <= 0
+          ? current.cart.filter((line) => line.slug !== slug)
+          : current.cart.map((line) => (line.slug === slug ? { ...line, quantity } : line)),
+    }));
   }, []);
 
-  const clearCart = useCallback(() => setCart([]), []);
+  const clearCart = useCallback(() => {
+    update((current) => ({ ...current, cart: [] }));
+  }, []);
 
   const toggleWishlist = useCallback((slug: string) => {
-    setWishlist((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
+    update((current) => ({
+      ...current,
+      wishlist: current.wishlist.includes(slug)
+        ? current.wishlist.filter((item) => item !== slug)
+        : [...current.wishlist, slug],
+    }));
   }, []);
 
-  const signIn = useCallback((next: MockUser) => setUser(next), []);
-  const signOut = useCallback(() => setUser(null), []);
+  const signIn = useCallback((user: MockUser) => {
+    update((current) => ({ ...current, user }));
+  }, []);
+
+  const signOut = useCallback(() => {
+    update((current) => ({ ...current, user: null }));
+  }, []);
 
   const value = useMemo<StoreState>(
     () => ({
-      cart,
-      wishlist,
-      user,
+      ...state,
       addToCart,
       removeFromCart,
       updateQuantity,
@@ -87,9 +162,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       toggleWishlist,
       signIn,
       signOut,
-      cartCount: cart.reduce((sum, line) => sum + line.quantity, 0),
+      cartCount: state.cart.reduce((sum, line) => sum + line.quantity, 0),
     }),
-    [cart, wishlist, user, addToCart, removeFromCart, updateQuantity, clearCart, toggleWishlist, signIn, signOut],
+    [state, addToCart, removeFromCart, updateQuantity, clearCart, toggleWishlist, signIn, signOut],
   );
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

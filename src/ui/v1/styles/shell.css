@@ -190,6 +190,12 @@
   padding: var(--space-4);
 }
 
+@media (max-width: 767px) {
+  .header-action-secondary {
+    display: none;
+  }
+}
+
 @media (min-width: 768px) {
   .primary-nav {
     display: block;

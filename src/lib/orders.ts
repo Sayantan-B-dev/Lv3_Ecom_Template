@@ -51,11 +51,31 @@ export function createMockOrder(input: {
 }
 
 const ORDER_KEY = "meridian.orders";
+const LAST_ORDER_KEY = "meridian.lastOrder";
+export const ORDERS_CHANGED_EVENT = "meridian:orders-changed";
+let ordersRevision = 0;
+
+export function getOrdersRevision(): number {
+  return ordersRevision;
+}
+
+function readLastOrder(): MockOrder | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(LAST_ORDER_KEY);
+    return raw ? (JSON.parse(raw) as MockOrder) : null;
+  } catch {
+    return null;
+  }
+}
 
 export function readOrders(): MockOrder[] {
   if (typeof window === "undefined") return [];
   try {
-    return JSON.parse(window.localStorage.getItem(ORDER_KEY) ?? "[]") as MockOrder[];
+    const orders = JSON.parse(window.localStorage.getItem(ORDER_KEY) ?? "[]") as MockOrder[];
+    const last = readLastOrder();
+    if (!last || orders.some((order) => order.id === last.id)) return orders;
+    return [last, ...orders];
   } catch {
     return [];
   }
@@ -65,4 +85,10 @@ export function saveOrder(order: MockOrder): void {
   if (typeof window === "undefined") return;
   const existing = readOrders();
   window.localStorage.setItem(ORDER_KEY, JSON.stringify([order, ...existing]));
+  ordersRevision += 1;
+  window.dispatchEvent(new Event(ORDERS_CHANGED_EVENT));
+}
+
+export function findOrder(id: string): MockOrder | null {
+  return readOrders().find((order) => order.id === id) ?? null;
 }
