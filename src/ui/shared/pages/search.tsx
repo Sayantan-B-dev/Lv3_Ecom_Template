@@ -16,8 +16,8 @@ export async function SearchPage({ searchParams }: SearchPageProps) {
     <div className="container" style={{ paddingTop: "1rem" }}>
       <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Search" }]} />
       <h1>Search</h1>
-      <form method="get" action="/search" role="search" aria-label="Product search">
-        <div className="field" style={{ maxWidth: "28rem" }}>
+      <form method="get" action="/search" role="search" aria-label="Product search" className="search-bar">
+        <div className="field">
           <label htmlFor="q">Search products</label>
           <input id="q" name="q" className="input" defaultValue={q} placeholder="Try “pack”, “lamp” or “sneaker”" />
         </div>
@@ -30,7 +30,9 @@ export async function SearchPage({ searchParams }: SearchPageProps) {
         )}
         {result && result.items.length > 0 && (
           <>
-            <p>{result.total} result(s) for “{q}”.</p>
+            <p>
+              {result.total} {result.total === 1 ? "result" : "results"} for “{q}”.
+            </p>
             <ProductGrid items={result.items} />
           </>
         )}

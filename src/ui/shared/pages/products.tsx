@@ -4,9 +4,9 @@ import { site } from "@/config/content";
 import { Breadcrumbs } from "@/ui/shared/components/Breadcrumbs";
 import { ProductGrid } from "@/ui/shared/components/ProductCard";
 import { Pagination } from "@/ui/shared/components/Pagination";
-import { EmptyState } from "@/ui/shared/components/States";import type { SortKey } from "@/lib/types";
+import { EmptyState } from "@/ui/shared/components/States";
+import type { SortKey } from "@/lib/types";
 import { first, type SearchParams } from "@/ui/shared/search-params";
-
 
 const sortOptions: { value: SortKey; label: string }[] = [
   { value: "featured", label: "Featured" },
