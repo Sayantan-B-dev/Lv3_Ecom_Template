@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCategories, getFeatured, getProducts } from "@/lib/catalog";
+import { categoryGradients, getCategories, getFeatured, getProducts } from "@/lib/catalog";
 import { heroContent, homeSections, promoBanners } from "@/config/content";
 import { ProductGrid } from "@/ui/shared/components/ProductCard";
 import { CategoryTile } from "@/ui/shared/components/CategoryTile";
@@ -29,10 +29,15 @@ export function V1Home() {
             <p className="hero-note">{heroContent.note}</p>
           </div>
           <div className="hero-visual" aria-hidden="true">
-            <div className="hero-tile" style={{ background: "linear-gradient(135deg,#1d4ed8,#7c3aed)" }}>Apparel</div>
-            <div className="hero-tile" style={{ background: "linear-gradient(135deg,#0f766e,#16a34a)" }}>Outdoors</div>
-            <div className="hero-tile" style={{ background: "linear-gradient(135deg,#b45309,#f59e0b)" }}>Home</div>
-            <div className="hero-tile" style={{ background: "linear-gradient(135deg,#be123c,#f43f5e)" }}>Footwear</div>
+            {categories.slice(0, 4).map((category) => (
+              <div
+                key={category.slug}
+                className="hero-tile"
+                style={{ background: categoryGradients[category.slug] }}
+              >
+                {category.name}
+              </div>
+            ))}
           </div>
         </div>
       </div>

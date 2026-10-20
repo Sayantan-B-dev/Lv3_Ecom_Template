@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { brand } from "@/config/brand";
 import { primaryNav } from "@/config/navigation";
@@ -10,8 +11,13 @@ function badgeLabel(count: number): string {
   return count > 99 ? "99+" : String(count);
 }
 
+function isCurrent(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function SiteHeader() {
   const { cartCount, wishlist, user } = useStore();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -22,6 +28,15 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
   return (
     <>
       <div className="promo-bar">
@@ -30,7 +45,7 @@ export function SiteHeader() {
       <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
         <div className="container site-header-inner">
           <button
-            className="icon-btn"
+            className="icon-btn header-menu"
             aria-expanded={open}
             aria-controls="v1-mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -48,7 +63,12 @@ export function SiteHeader() {
             <ul>
               {primaryNav.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href}>{link.label}</Link>
+                  <Link
+                    href={link.href}
+                    aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+                  >
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -87,7 +107,11 @@ export function SiteHeader() {
           <ul style={{ listStyle: "none", margin: 0, padding: "0 0 16px" }}>
             {primaryNav.map((link) => (
               <li key={link.href} style={{ padding: "4px 0" }}>
-                <Link href={link.href} onClick={() => setOpen(false)}>
+                <Link
+                  href={link.href}
+                  aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                >
                   {link.label}
                 </Link>
               </li>
