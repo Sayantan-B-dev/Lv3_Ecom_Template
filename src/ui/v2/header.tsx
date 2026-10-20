@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { brand } from "@/config/brand";
 import { primaryNav } from "@/config/navigation";
 import { useStore } from "@/lib/store-context";
@@ -10,9 +11,23 @@ function badgeLabel(count: number): string {
   return count > 99 ? "99+" : String(count);
 }
 
+function isCurrent(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function V2Header() {
   const { cartCount, wishlist, user } = useStore();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
 
   return (
     <header className="ed-header">
@@ -82,7 +97,12 @@ export function V2Header() {
           <ul>
             {primaryNav.map((link) => (
               <li key={link.href}>
-                <Link href={link.href}>{link.label}</Link>
+                <Link
+                  href={link.href}
+                  aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -94,7 +114,11 @@ export function V2Header() {
           <ul>
             {primaryNav.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} onClick={() => setOpen(false)}>
+                <Link
+                  href={link.href}
+                  aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                >
                   {link.label}
                 </Link>
               </li>

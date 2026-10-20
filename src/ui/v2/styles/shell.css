@@ -151,8 +151,15 @@
   text-decoration: none;
 }
 
-.ed-nav a:hover {
+.ed-nav a:hover,
+.ed-nav a[aria-current="page"] {
   color: var(--color-text-primary);
+}
+
+.ed-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 8px;
 }
 
 .ed-mobile-nav {
@@ -176,6 +183,10 @@
   font-size: var(--font-size-xl);
   color: var(--color-text-primary);
   text-decoration: none;
+}
+
+.ed-mobile-nav a[aria-current="page"] {
+  color: var(--color-text-sale);
 }
 
 @media (max-width: 639px) {

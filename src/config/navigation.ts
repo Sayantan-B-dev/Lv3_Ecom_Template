@@ -9,6 +9,7 @@ export const primaryNav: NavLink[] = [
   { label: "Footwear", href: "/category/footwear" },
   { label: "Accessories", href: "/category/accessories" },
   { label: "Home goods", href: "/category/home-goods" },
+  { label: "Electronics", href: "/category/electronics" },
   { label: "Outdoors", href: "/category/outdoors" },
 ];
 
