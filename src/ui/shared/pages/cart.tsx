@@ -31,7 +31,7 @@ export function CartPage() {
           {lines.map((line) => (
             <div key={line.slug + (line.size ?? "") + (line.color ?? "")} className="cart-line">
               <div className="cart-thumb" style={{ background: gradientFor(line.product) }} aria-hidden="true">
-                {line.product.glyph}
+                <span>{line.product.glyph}</span>
               </div>
               <div>
                 <Link href={`/products/${line.product.slug}`} style={{ fontWeight: 700 }}>

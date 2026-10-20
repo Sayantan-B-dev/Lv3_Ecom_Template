@@ -282,6 +282,19 @@
   color: var(--color-text-secondary);
 }
 
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2);
+  max-width: 36rem;
+}
+
+.search-bar .field {
+  flex: 1 1 16rem;
+  margin-bottom: 0;
+}
+
 .form-error {
   font-size: var(--font-size-xs);
   color: var(--color-text-danger);
@@ -342,6 +355,8 @@
 }
 
 .product-media {
+  position: relative;
+  isolation: isolate;
   aspect-ratio: 4 / 5;
   display: flex;
   align-items: center;
@@ -352,6 +367,43 @@
   border-radius: var(--radius-media);
   margin: var(--space-2);
   overflow: hidden;
+}
+
+/* Shared placeholder artwork: a soft light pass plus a fine weft so the
+   generated gradient reads as an intentional image, not a missing asset. */
+.product-media::after,
+.detail-gallery::after,
+.cart-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.24), transparent 58%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 0 1px,
+      transparent 1px 24px
+    );
+  pointer-events: none;
+}
+
+.product-media span,
+.detail-gallery span,
+.cart-thumb span {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+.product-media span {
+  font-size: clamp(3rem, 6vw, 6rem);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.28));
+  transition: transform var(--motion-slow) var(--motion-standard);
+}
+
+@media (hover: hover) {
+  .product-card:hover .product-media span {
+    transform: scale(1.06);
+  }
 }
 
 .product-card-badges {
@@ -490,6 +542,8 @@
 }
 
 .cart-thumb {
+  position: relative;
+  isolation: isolate;
   width: 72px;
   height: 90px;
   border-radius: var(--radius-media);
@@ -499,6 +553,7 @@
   font-size: 28px;
   color: #fff;
   font-weight: 800;
+  overflow: hidden;
 }
 
 /* Skeleton / empty / error */

@@ -12,7 +12,7 @@ export async function ProductDetailPage({ params }: { params: Promise<{ slug: st
   const product = getProduct(slug);
   if (!product) notFound();
   const category = getCategory(product.categorySlug);
-  const related = getRelated(product, 3);
+  const related = getRelated(product, 4);
 
   return (
     <div className="container" style={{ paddingTop: "1rem" }}>
