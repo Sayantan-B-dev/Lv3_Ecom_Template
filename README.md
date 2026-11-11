@@ -1,64 +1,378 @@
-# Meridian — reusable e-commerce storefront template
+# Meridian
 
-Next.js App Router + TypeScript + Tailwind v4 + plain CSS storefront that can be rebranded to different shops without major code changes. Catalog and checkout are mocked with JSON + Route Handlers; no database.
+Meridian is a reusable, multi-product e-commerce storefront template built with
+Next.js App Router, React, TypeScript, and Tailwind CSS v4. It is designed to
+be cloned and rebranded for different stores without changing the shared
+commerce code.
 
-The project also supports several independent storefront UIs in one codebase. They share the same routes, data, cart, checkout and mock backend, but each theme owns its shell, home page, design tokens and any page overrides.
+The repository currently includes two independent storefront presentations:
 
-## Setup
+- **Classic (`v1`)** - soft radii, a bright yellow accent, and a
+  content-first catalog.
+- **Editorial (`v2`)** - warm paper surfaces, serif headlines, and a
+  sharp, magazine-inspired grid.
+
+Both presentations use the same routes, mock catalog, cart, wishlist,
+authentication, checkout flow, and API handlers. The selected theme is resolved
+at build time, so only that theme's UI and styles are compiled.
+
+> This is a demo template. Products, authentication, orders, payments,
+> shipping, email, and persistence are mock implementations. Do not use the
+> checkout flow for real transactions.
+
+## Features
+
+- Next.js 16 App Router with strict TypeScript
+- Responsive storefront shell and navigation
+- Home page with featured products and categories
+- Product listing, category listing, search, sorting, filters, and pagination
+- Product detail pages with variants, stock, ratings, and related products
+- Cart and wishlist state
+- Mock sign-in and sign-up flows
+- Mock checkout, order creation, and order detail pages
+- Browser persistence for cart, wishlist, user, and locally created orders
+- Two independently selectable storefront themes
+- Shared business logic and page implementations across themes
+- Loading, empty, not-found, error, and responsive states
+- Token-based theme styles with separate theme overrides
+
+## Requirements
+
+- Node.js compatible with the installed Next.js version
+- npm
+
+The repository includes `package-lock.json`; use npm and do not add another
+package-manager lockfile.
+
+## Quick start
+
+Install dependencies:
 
 ```bash
 npm install
+```
+
+Start the development server using the default available theme:
+
+```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000) in a browser.
 
-## Storefront UIs
+To select a theme explicitly:
 
 ```bash
-npm run ui:list
-npm run dev            # first available theme
-npm run dev v1         # Classic
-npm run dev v2         # Editorial
-npm run build v1
-npm run start v1
+npm run dev v1
+npm run dev v2
 ```
 
-Themes live in `src/ui/<theme-id>/`. `next.config.ts` resolves the `"ui"` alias to the selected theme, so only that UI is compiled. To remove a design, delete its folder; with one theme left, plain `npm run dev` uses it automatically. See [docs/ui-themes.md](docs/ui-themes.md) for adding, overriding and removing themes.
+The theme runner prints the selected theme when the server starts. Restart the
+development server after changing themes because the `ui` module alias is
+resolved when Next.js starts.
+
+## Commands
+
+| Command | Description |
+| --- | --- |
+| `npm install` | Install dependencies from `package-lock.json`. |
+| `npm run dev` | Start Next.js in development mode with the first available theme. |
+| `npm run dev v1` | Start development mode with the Classic theme. |
+| `npm run dev v2` | Start development mode with the Editorial theme. |
+| `npm run build` | Create a production build using the default theme. |
+| `npm run build v1` | Create a production build using Classic. |
+| `npm run build v2` | Create a production build using Editorial. |
+| `npm run start` | Start the production server using the default theme. |
+| `npm run start v2` | Start the production server using Editorial. |
+| `npm run ui:list` | List available themes and their descriptions. |
+| `npm run lint` | Run ESLint. |
+| `npm run typecheck` | Run TypeScript without emitting files. |
+
+Additional Next.js arguments can be passed after the theme:
+
+```bash
+npm run dev v2 -- -p 3101
+```
+
+## Environment configuration
+
+Copy the example file before making local changes:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+The current example configuration is:
+
+```dotenv
+NEXT_PUBLIC_STORE_NAME=Meridian
+NEXT_PUBLIC_STORE_CURRENCY=USD
+NEXT_PUBLIC_API_BASE_URL=
+DEMO_MODE=true
+UI_THEME=v1
+```
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_STORE_NAME` | Public store name for integrations that use environment configuration. |
+| `NEXT_PUBLIC_STORE_CURRENCY` | Currency identifier used by the store configuration. |
+| `NEXT_PUBLIC_API_BASE_URL` | Optional base URL for a future external API. |
+| `DEMO_MODE` | Indicates that the application uses demo commerce behavior. |
+| `UI_THEME` | Default theme when a theme is not passed on the command line. |
+
+Theme selection precedence is:
+
+1. A theme passed to the npm command, such as `npm run dev v2`
+2. The `UI_THEME` process environment variable
+3. `UI_THEME` in `.env.local`
+4. `UI_THEME` in `.env`
+5. The first theme folder alphabetically
+
+The checked-in brand configuration currently lives in
+[`src/config/brand.ts`](src/config/brand.ts). It contains Meridian's name,
+tagline, logo text, support email, currency, and locale. Keep secrets out of
+`.env.local`; it is ignored by Git.
+
+## Storefront routes
+
+The route adapters in `src/app/` stay deliberately thin. They select the
+active theme's implementation through the `ui` alias.
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Storefront home page |
+| `/products` | Full product catalog |
+| `/products/[slug]` | Product detail |
+| `/category/[slug]` | Category-specific catalog |
+| `/search` | Search results |
+| `/cart` | Cart |
+| `/wishlist` | Wishlist |
+| `/checkout` | Checkout form and mock payment step |
+| `/orders/[id]` | Mock order detail and status |
+| `/account` | Account overview |
+| `/account/orders` | Orders saved in the current browser |
+| `/auth/sign-in` | Mock sign-in |
+| `/auth/sign-up` | Mock sign-up |
+
+The application also provides loading, not-found, and error boundaries through
+the corresponding files in `src/app/`.
+
+## API routes
+
+### `GET /api/categories`
+
+Returns the catalog categories from `src/data/categories.json`.
+
+### `GET /api/products`
+
+Returns a paginated catalog result. Supported query parameters are:
+
+- `q` - case-insensitive text search across product name, descriptions,
+  category, and tags
+- `category` - category slug
+- `minPrice` and `maxPrice` - numeric price bounds
+- `minRating` - minimum rating
+- `sort` - `featured`, `price-asc`, `price-desc`, `rating`, `newest`, or
+  `name`
+- `page` - one-based page number
+- `perPage` - number of products per page
+
+Example:
+
+```text
+/api/products?q=canvas&category=footwear&sort=price-asc&page=1&perPage=9
+```
+
+The response contains the same pagination shape used by the catalog library:
+
+```json
+{
+  "items": [],
+  "total": 0,
+  "page": 1,
+  "perPage": 9,
+  "totalPages": 1
+}
+```
+
+### `POST /api/checkout`
+
+Creates a mock order from an email, customer name, address, and cart items.
+The request body accepts:
+
+```json
+{
+  "email": "shopper@example.com",
+  "name": "Demo Shopper",
+  "line1": "1 Market Street",
+  "city": "Austin",
+  "postal": "78701",
+  "country": "United States",
+  "items": [
+    {
+      "slug": "example-product",
+      "quantity": 1,
+      "size": "M",
+      "color": "Black"
+    }
+  ]
+}
+```
+
+The route validates required contact, address, and cart fields, calculates
+mock totals, and returns an order with the notice:
+`Mock checkout — no payment was processed.`
 
 ## Architecture
 
-- `src/config/` — `brand.ts` (name, email, currency), `navigation.ts` (nav links + theme tokens), `content.ts` (hero, promos, shipping/tax constants).
-- `src/data/` — `categories.json` (6 categories), `products.json` (24 products across apparel, footwear, accessories, home goods, electronics, outdoors).
-- `src/lib/` — `types.ts`, `catalog.ts` (filter/sort/search/paginate + gradients), `orders.ts` (cart totals, mock orders), `store-context.tsx` (cart/wishlist/user in `localStorage`), `format.ts`.
-- `src/ui/contract.ts` — the page and theme interface every UI implements.
-- `src/ui/shared/` — page templates and presentational components reused by themes.
-- `src/ui/v1/` — Classic: soft radii, yellow accent, content-first catalog.
-- `src/ui/v2/` — Editorial: warm paper, serif headlines, sharp grid and masthead.
-- `src/app/` — thin route adapters, API handlers and the root layout; page files import the active theme from `"ui"`.
-- `src/styles/` — shared reset, accessibility utilities and base typography.
+```text
+src/
+├── app/                 Next.js route adapters, layouts, pages, and API routes
+├── config/              Brand, navigation, and merchandising configuration
+├── data/                Mock categories and products
+├── lib/                 Catalog queries, formatting, orders, types, and state
+├── styles/              Shared reset and structural styles
+├── types/               TypeScript declarations, including the ui alias
+└── ui/
+    ├── contract.ts      Contract implemented by every storefront theme
+    ├── shared/          Shared pages, components, and styles
+    ├── v1/              Classic theme
+    └── v2/              Editorial theme
+```
 
-## Configuration
+### Theme boundary
 
-To create a new shop:
+Shared code owns data and behavior:
 
-1. Update `src/config/brand.ts`, `src/config/navigation.ts`, `src/config/content.ts`.
-2. Replace `src/data/categories.json` and `src/data/products.json` (keep the `Product` shape in `src/lib/types.ts`).
-3. Adjust tokens in the active theme's `styles/tokens.css` and the theme's shell/home.
-4. See `design.md` for the design system and `AGENTS.md` for contributor conventions.
+- `src/app/api/`
+- route adapters under `src/app/`
+- `src/config/`
+- `src/data/`
+- `src/lib/`
+- `src/ui/shared/`
 
-## Mock functionality
+Each theme owns its presentation:
 
-- Cart and wishlist persist in `localStorage` (`meridian.cart`, `meridian.wishlist`).
-- Auth accepts any email; the user is stored as `meridian.user`. No passwords are checked or sent anywhere.
-- Checkout posts to `/api/checkout`, which validates address + items and returns a `MockOrder`. The client saves it (`meridian.orders`, `meridian.lastOrder`), clears the cart and routes to `/orders/[id]`.
-- Banners and checkout pages state clearly that payments, emails and shipping are simulated.
+- shell and site chrome
+- home page
+- design tokens
+- theme styles
+- optional page overrides
+
+The active theme must not import another theme. It may import shared UI code
+and library code. The contract in [`src/ui/contract.ts`](src/ui/contract.ts)
+defines the required shell, metadata, locale, font class, and page surface.
+
+## Mock data and state
+
+Catalog data is stored in:
+
+- [`src/data/categories.json`](src/data/categories.json)
+- [`src/data/products.json`](src/data/products.json)
+
+The catalog library in [`src/lib/catalog.ts`](src/lib/catalog.ts) provides
+category lookup, product lookup, featured products, related products, search,
+filtering, sorting, and pagination.
+
+Cart, wishlist, and mock user state are stored in browser `localStorage` by
+[`src/lib/store-context.tsx`](src/lib/store-context.tsx). The current storage
+keys are:
+
+- `meridian.cart`
+- `meridian.wishlist`
+- `meridian.user`
+
+Mock orders are saved by the client after checkout. This state is local to the
+browser and is not shared between users, browsers, or devices. No real
+authentication, database, payment gateway, inventory reservation, shipping
+provider, or email provider is connected.
+
+## Creating a new storefront
+
+To turn this template into a new shop:
+
+1. Replace or extend the mock categories and products while preserving the
+   TypeScript shapes in [`src/lib/types.ts`](src/lib/types.ts).
+2. Update the brand identity in [`src/config/brand.ts`](src/config/brand.ts).
+3. Update navigation and merchandising copy in
+   [`src/config/navigation.ts`](src/config/navigation.ts) and
+   [`src/config/content.ts`](src/config/content.ts).
+4. Replace the active theme's tokens in
+   `src/ui/<theme-id>/styles/tokens.css`.
+5. Update the theme shell, home content, logo treatment, and imagery where
+   the new brand requires it.
+6. Copy the relevant values from `.env.example` into `.env.local`.
+7. Run the validation commands before sharing the new storefront.
+
+For design decisions, read [`design.md`](design.md). It defines the semantic
+tokens, typography, spacing, surface hierarchy, interaction states, responsive
+behavior, accessibility expectations, and brand-layer approach.
+
+## Adding a theme
+
+1. Copy `src/ui/v1/` to `src/ui/<theme-id>/`.
+2. Update `theme.json` with the theme label and description.
+3. Implement the theme's `index.ts` using the `UITheme` contract.
+4. Replace `styles/tokens.css` with the new brand and semantic tokens.
+5. Implement the theme shell and home page.
+6. Reuse shared pages from `src/ui/shared/pages` unless a page genuinely needs
+   a presentation-specific override.
+7. Run `npm run ui:list` and build the new theme explicitly.
+
+For the complete theme workflow and boundaries, see
+[`docs/ui-themes.md`](docs/ui-themes.md).
+
+## Styling and accessibility expectations
+
+Use the design system rather than one-off component values:
+
+- Consume semantic CSS variables from the active theme.
+- Keep layouts mobile-first and responsive from 320px upward.
+- Preserve visible keyboard focus and accessible labels.
+- Keep hover, focus-visible, active, disabled, loading, and error states
+  intentional for interactive controls.
+- Use the shared loading, empty, error, and not-found patterns.
+- Keep product titles, prices, ratings, and stock states readable at narrow
+  widths.
+- Respect reduced-motion preferences when adding transitions.
+
+The shared base styles are in `src/styles/base.css`; structural and component
+styles are in `src/ui/shared/styles/`. Theme-specific styles live within each
+theme directory.
 
 ## Validation
+
+Run the focused checks before opening a pull request or handing a theme to
+another developer:
 
 ```bash
 npm run lint
 npm run typecheck
-npm run build
+npm run build v1
 npm run build v2
 ```
+
+To smoke-test a theme locally:
+
+```bash
+npm run dev v1
+```
+
+Then exercise the home page, catalog filters and pagination, search, product
+detail, cart, wishlist, mock sign-in, checkout, and order detail routes.
+
+## Documentation
+
+- [`design.md`](design.md) - design system and theming rules
+- [`agent.md`](agent.md) - repository engineering rules
+- [`docs/ui-themes.md`](docs/ui-themes.md) - theme creation and selection
+- [`docs/decisions.md`](docs/decisions.md) - architectural decisions
+- [`docs/changelog.md`](docs/changelog.md) - user-visible changes
+
+## License and production use
+
+This repository is a development template containing mock data and demo
+commerce behavior. Before production use, add a real persistence layer,
+server-side validation, authentication, inventory and order handling, payment
+processing, shipping integration, email delivery, observability, and a
+production security review.
