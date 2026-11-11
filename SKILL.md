@@ -1,6 +1,6 @@
 ---
 name: design-system-ecommerce-template
-description: Implementation-ready, token-driven design system for multi-brand, multi-product e-commerce storefronts (listing, filters, sorting, pagination, product detail, cart, checkout, account). Use when creating or updating storefront UI, component specs, theming a new brand, or design-system documentation. Synthesizes Abbey Glass, IKEA India, Nike IN, Allbirds and Apple Store patterns.
+description: Implementation-ready, token-driven design system for multi-brand, multi-product e-commerce storefronts (listing, filters, sorting, pagination, product detail, cart, checkout, account). Use when creating or updating storefront UI, component specs, theming a new brand, or design-system documentation. Synthesizes Shops.gallery, IKEA India, Nike IN, Allbirds and Apple Store patterns.
 ---
 
 # E-Commerce Template Design System
@@ -18,33 +18,34 @@ Deliver one consistent, accessible, themeable UI system for any storefront (shoe
 ## Source synthesis
 | Source | Principle adopted | Used for |
 |---|---|---|
-| Abbey Glass (shops.gallery) | Manrope, warm neutral surfaces, soft large shadows, 60px display type | Typography, elevation, surface tiers |
-| IKEA India | Single strong accent, dense functional grids, 300ms motion | Accent role, grid density, price blocks |
-| Nike IN | Utility-first minimal UI, extreme type contrast, pill controls, 200ms interactions | Buttons, hero scale, motion |
-| Allbirds | Hairline inset borders, calm 150-300ms motion, full-round chips | Borders, chips, focus style |
-| Apple Store | Tight small text, light raised surfaces, large pills, generous whitespace | Raised surfaces, section spacing |
+| Shops.gallery | Content-first rhythm, soft diffused shadows, large radii, translucent ink surfaces | Shadows, surface tiers, card rhythm |
+| IKEA India | Functional clarity, strong single accent, dense card grids, 300ms motion | Accent role, grid density, price blocks |
+| Nike IN | Minimal utility, heavy type contrast, pill buttons, 200ms interactions | Type scale extremes, button shape, hero |
+| Allbirds | Warm neutrals, hairline inset borders, calm 150-300ms motion, full-round chips | Borders, chips, focus ring style |
+| Apple Store | Tight small text, light raised surfaces, generous vertical whitespace | Surface-raised, section spacing |
 
 ---
 
 ## 1. Brand layer (the only layer edited per site)
 ```css
 :root {
+  /* identity */
   --brand-name: "Template Store";
-  --brand-accent: #ffdb00;
-  --brand-accent-ink: #111111;
-  --brand-ink: #121212;
-  --brand-paper: #ffffff;
+  --brand-accent: #ffdb00;           /* primary action accent */
+  --brand-accent-ink: #111111;       /* text placed on accent */
+  --brand-ink: #111111;              /* strongest text and primary solid button */
+  --brand-paper: #ffffff;            /* page base */
   --brand-font-primary: "Manrope";
   --brand-font-display: "Manrope";
-  --brand-radius-style: pill; /* pill | soft | sharp */
+  --brand-radius-style: pill;        /* pill | soft | sharp */
 }
 ```
-| Preset | accent | accent-ink | ink | radius-style |
-|---|---|---|---|---|
-| Home (IKEA-like) | #ffdb00 | #111111 | #121212 | pill |
-| Utility (Nike-like) | #111111 | #ffffff | #111111 | pill |
-| Warm (Allbirds/Abbey-like) | #212121 | #ffffff | #212121 | soft |
-| Tech (Apple-like) | #0071e3 | #ffffff | #1d1d1f | pill |
+| Preset | accent | accent-ink | ink | font | radius-style |
+|---|---|---|---|---|---|
+| Home (IKEA-like) | #ffdb00 | #111111 | #111111 | Manrope | pill |
+| Utility (Nike-like) | #111111 | #ffffff | #111111 | Helvetica stack | pill |
+| Warm (Allbirds-like) | #212121 | #ffffff | #212121 | Manrope | soft |
+| Tech (Apple-like) | #0071e3 | #ffffff | #1d1d1f | SF Pro stack | pill |
 
 Rules:
 - Components must consume only semantic tokens (section 2), never `--brand-*` directly.
@@ -57,6 +58,7 @@ Rules:
 
 ### 2.1 Typography
 - `font.family.stack = Manrope, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif`
+- `font.family.mono = ui-monospace, SFMono-Regular, Menlo, monospace` (SKU, order IDs only)
 - `font.size.base=16px`, `font.weight.base=400`, `font.lineHeight.base=24px`
 - Fonts must load through `next/font` with `display: swap` and a metric-matched fallback.
 
@@ -110,7 +112,7 @@ Rules:
 ```
 Dark mode must be token swaps only: base `#0e0e0f`, muted `#17171a`, raised `#1f1f23`, text-primary `#f5f5f7`, text-secondary `#a8a8ad`, borders `rgba(255,255,255,0.14)`.
 
-### 2.3 Spacing (4px base; source oddities like 5.62, 15, 17, 62, 106 are normalized)
+### 2.3 Spacing (4px base)
 `space.1=4` `space.2=8` `space.3=12` `space.4=16` `space.5=20` `space.6=24` `space.7=32` `space.8=40` `space.9=56` `space.10=80` `space.11=112` (px).
 - Gutters: 16 mobile, 24 tablet, 32 desktop. Section gaps: 56 / 80 / 112.
 - Container max width 1440px. Breakpoints: 480, 768, 1024, 1280, 1536.
@@ -332,6 +334,7 @@ Concise, confident, implementation-focused in documentation; warm, direct, never
 | Empty cart | "Your bag is empty. Start with our new arrivals." | "No items." |
 | Result count | "128 products" | "Results found: 128" |
 | Destructive | "Remove from bag" with Undo | "Delete" without recovery |
+
 - Buttons must use verb plus object. Links must make sense out of context. Errors state the cause and the fix. Use sentence case; uppercase only via CSS on micro labels or hero. Format numbers and dates by locale.
 
 ### Prohibited
@@ -352,7 +355,7 @@ Concise, confident, implementation-focused in documentation; warm, direct, never
 3. Re-run the contrast check and adjust `accent-ink` or `text-secondary`.
 4. Snap imported spacing and radius to the nearest scale token; new tokens need design review.
 5. Switch `--brand-radius-style` rather than overriding individual radii.
-6. Record the change in `docs/design-changelog.md`.
+6. Record the change in `docs/theming.md` and `docs/decisions.md`.
 
 ---
 
@@ -376,19 +379,11 @@ Concise, confident, implementation-focused in documentation; warm, direct, never
 - [ ] Copy uses verb plus object labels; no dark patterns.
 - [ ] Design changelog updated; LCP under 2.5s, INP under 200ms.
 
-## Quality gates
-- Every non-negotiable rule must use "must".
-- Every recommendation should use "should".
-- Every accessibility rule must be testable in implementation.
-- Prefer system consistency over local visual exceptions.
-
 ---
 
 ## 8. Installed agent skills
 
-Project-level skills live in `.agents/skills/` and apply to this template. Review a skill's
-`SKILL.md` before first use; installed skills run with full agent permissions. Keep the set
-lean — each skill adds context weight.
+Project-level skills live in `.agents/skills/` and apply to this template. Review a skill's `SKILL.md` before first use; installed skills run with full agent permissions. Keep the set lean — each skill adds context weight.
 
 ### Installed (starter set)
 
@@ -409,16 +404,14 @@ Run `npx skills add <owner/repo> -l` to list exact skill names if a command fail
 npx skills add addyosmani/agent-skills -s frontend-ui-engineering -a opencode
 npx skills add jezweb/claude-skills -s tailwind-v4-shadcn -a opencode
 npx skills add currents-dev/playwright-best-practices-skill -a opencode
-npx ai-agent-skills install backend-development
+npx ai-agent-skills install backend_development
 npx skills add supabase/agent-skills -s supabase-postgres-best-practices -a opencode
 ```
 
-- frontend-ui-engineering: component architecture, design systems, responsive design and
-  accessibility (matches this design system).
+- frontend-ui-engineering: component architecture, design systems, responsive design and accessibility (matches this design system).
 - tailwind-v4-shadcn: Tailwind v4 plus shadcn/ui integration.
 - playwright-best-practices: E2E, component, API, visual regression and a11y testing.
 - backend-development: APIs and server architecture (separate CLI).
-- supabase-postgres-best-practices: Postgres optimization; install when mock data is
-  replaced with a real database.
+- supabase-postgres-best-practices: Postgres optimization; install when mock data is replaced with a real database.
 - Built-in security scan: `/security-review` ships in Claude Code by default.
 - Skill discovery: the find-skills skill searches the skills.sh leaderboard.
