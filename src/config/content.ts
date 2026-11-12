@@ -50,3 +50,34 @@ export const editorialContent = {
   departmentsSubtitle: "Browse the full catalog by room, wardrobe and terrain.",
   valueTitle: "Our promises",
 } as const;
+
+export const nocturneContent = {
+  utilityShipping: "Complimentary shipping over",
+  utilityDemo: "Demo storefront - simulated checkout",
+  indexMeta: "Departments",
+  stats: {
+    products: "Pieces in the demo catalogue",
+    departments: "Departments to explore",
+    shipping: "Free shipping threshold",
+    returns: "Returns, no questions",
+  },
+  tickerNote: "New season",
+  leadLabel: "Editor's pick",
+  leadNote: "A closer look at the pieces we keep coming back to.",
+  newsletter: {
+    label: "Email address",
+    placeholder: "you@example.com",
+    cta: "Join the list",
+    done: "You're on the list",
+    note: "Monthly edit. No noise. Unsubscribe anytime.",
+    thanks: "Thanks - this is a demo, nothing was sent.",
+  },
+  footer: {
+    shopHeading: "Shop",
+    accountHeading: "Account",
+    noteHeading: "Demo notice",
+    note:
+      "Authentication, checkout and orders are mocked with local data. No real payment is processed and no goods are shipped.",
+    legal: "Reusable storefront template",
+  },
+} as const;
