@@ -2,6 +2,16 @@
 
 The template can hold several independent storefront designs in one Next.js app. They all share the same data, repository helpers, cart state, route handlers and business logic; only the presentation layer changes.
 
+## Bundled themes
+
+| Id   | Label      | Direction |
+| ---- | ---------- | --------- |
+| `v1` | Classic    | Soft radii, yellow accent, content-first catalog. |
+| `v2` | Editorial  | Warm paper, serif headlines and a sharp, magazine-like grid. |
+| `v3` | Nocturne   | Dark gallery canvas with an automatic light variant, oversized serif type, acid accent and a kinetic editorial grid. |
+
+Preview a specific theme with `npm run dev v3`. Nocturne is dark-first and switches to a warm paper palette automatically through `prefers-color-scheme: light`.
+
 ## How selection works
 
 - Every UI lives in `src/ui/<theme-id>/` and default-exports a `UITheme` from `index.ts`.
