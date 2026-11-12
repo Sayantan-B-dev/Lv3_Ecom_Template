@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "awwwards": {
+      "type": "local",
+      "command": ["cmd", "/c", "awwwards-mcp"],
+      "enabled": true
+    }
+  }
+}
