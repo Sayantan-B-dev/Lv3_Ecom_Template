@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { getCategory, gradientFor } from "@/lib/catalog";
+import { getCategory } from "@/lib/catalog";
+import { getProductImage } from "@/lib/images/getImage";
 import { currency } from "@/lib/format";
 import { useStore } from "@/lib/store-context";
 import type { Product } from "@/lib/types";
+import { ImageFrame } from "./ImageFrame";
 import { Rating } from "./Rating";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -14,13 +16,8 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="card product-card">
-      <div
-        className="product-media"
-        style={{ background: gradientFor(product) }}
-        role="img"
-        aria-label={`${product.name} placeholder image`}
-      >
-        <span aria-hidden="true">{product.glyph}</span>
+      <div className="product-media">
+        <ImageFrame image={getProductImage(product)} />
       </div>
       <div className="product-card-badges" aria-hidden="true">
         {product.compareAtPrice && <span className="badge badge-accent">Sale</span>}

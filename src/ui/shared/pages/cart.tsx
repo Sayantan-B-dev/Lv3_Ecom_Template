@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { gradientFor } from "@/lib/catalog";
+import { getProductImage } from "@/lib/images/getImage";
 import { currency } from "@/lib/format";
 import { resolveCart, cartTotals } from "@/lib/orders";
 import { useStore } from "@/lib/store-context";
 import { site } from "@/config/content";
+import { ImageFrame } from "@/ui/shared/components/ImageFrame";
 import { EmptyState } from "@/ui/shared/components/States";
 
 export function CartPage() {
@@ -30,8 +31,8 @@ export function CartPage() {
         <div>
           {lines.map((line) => (
             <div key={line.slug + (line.size ?? "") + (line.color ?? "")} className="cart-line">
-              <div className="cart-thumb" style={{ background: gradientFor(line.product) }} aria-hidden="true">
-                <span>{line.product.glyph}</span>
+              <div className="cart-thumb" aria-hidden="true">
+                <ImageFrame image={getProductImage(line.product)} decorative />
               </div>
               <div>
                 <Link href={`/products/${line.product.slug}`} style={{ fontWeight: 700 }}>

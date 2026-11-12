@@ -27,6 +27,13 @@ const turbopackThemeEntry = `./src/ui/${activeTheme}/index.ts`;
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "encrypted-tbn0.gstatic.com" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "ik.imagekit.io" },
+    ],
+  },
   turbopack: {
     resolveAlias: {
       ui: turbopackThemeEntry,

@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { categoryGradients, getCategories, getFeatured, getProducts } from "@/lib/catalog";
+import { getCategories, getFeatured, getProducts } from "@/lib/catalog";
+import { getCategoryImage } from "@/lib/images/getImage";
 import { heroContent, homeSections, promoBanners } from "@/config/content";
 import { ProductGrid } from "@/ui/shared/components/ProductCard";
 import { CategoryTile } from "@/ui/shared/components/CategoryTile";
+import { ImageFrame } from "@/ui/shared/components/ImageFrame";
 
 export function V1Home() {
   const categories = getCategories();
@@ -30,12 +32,9 @@ export function V1Home() {
           </div>
           <div className="hero-visual" aria-hidden="true">
             {categories.slice(0, 4).map((category) => (
-              <div
-                key={category.slug}
-                className="hero-tile"
-                style={{ background: categoryGradients[category.slug] }}
-              >
-                {category.name}
+              <div key={category.slug} className="hero-tile">
+                <ImageFrame image={getCategoryImage(category)} decorative />
+                <span className="hero-tile-label">{category.name}</span>
               </div>
             ))}
           </div>

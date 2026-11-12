@@ -88,16 +88,3 @@ export function queryCatalog(query: CatalogQuery): Paginated<Product> {
     totalPages,
   };
 }
-
-export const categoryGradients: Record<string, string> = {
-  apparel: "linear-gradient(135deg,#1d4ed8,#7c3aed)",
-  footwear: "linear-gradient(135deg,#be123c,#f43f5e)",
-  accessories: "linear-gradient(135deg,#0f766e,#14b8a6)",
-  "home-goods": "linear-gradient(135deg,#b45309,#f59e0b)",
-  electronics: "linear-gradient(135deg,#334155,#0ea5e9)",
-  outdoors: "linear-gradient(135deg,#15803d,#84cc16)",
-};
-
-export function gradientFor(product: Pick<Product, "categorySlug">): string {
-  return categoryGradients[product.categorySlug] ?? "linear-gradient(135deg,#334155,#64748b)";
-}

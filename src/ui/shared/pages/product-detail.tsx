@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCategory, getProduct, getRelated, gradientFor } from "@/lib/catalog";
+import { getCategory, getProduct, getRelated } from "@/lib/catalog";
+import { getProductImage } from "@/lib/images/getImage";
 import { currency } from "@/lib/format";
 import { Breadcrumbs } from "@/ui/shared/components/Breadcrumbs";
+import { ImageFrame } from "@/ui/shared/components/ImageFrame";
 import { Rating } from "@/ui/shared/components/Rating";
 import { AddToCart } from "@/ui/shared/components/AddToCart";
 import { ProductGrid } from "@/ui/shared/components/ProductCard";
@@ -24,8 +26,8 @@ export async function ProductDetailPage({ params }: { params: Promise<{ slug: st
         ]}
       />
       <div className="product-layout">
-        <div className="detail-gallery" style={{ background: gradientFor(product) }} role="img" aria-label={`${product.name} placeholder image`}>
-          <span aria-hidden="true">{product.glyph}</span>
+        <div className="detail-gallery">
+          <ImageFrame image={getProductImage(product)} priority />
         </div>
         <div>
           <p style={{ margin: 0 }}>
